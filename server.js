@@ -8,19 +8,12 @@ const app = express()
 
 app.use(express.json())
 
-app.get("/", (req, res) => {
-  res.send("AuthCore API Running")
+app.get("/", async (req, res) => {
+  const result = await pool.query("SELECT NOW()")
+  res.json(result.rows)
 })
 
-pool.connect()
-  .then(() => {
-    console.log("PostgreSQL connected")
-  })
-  .catch((err) => {
-    console.error("Database connection error:", err)
-  })
-
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
