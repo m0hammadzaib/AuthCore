@@ -9,7 +9,7 @@ const app = express()
 app.use(express.json())
 
 app.get("/", async (req, res) => {
-  const result = await pool.query("SELECT NOW()")
+  const result = await pool.query("SELECT username FROM users")
   res.json(result.rows)
 })
 
