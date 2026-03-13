@@ -1,13 +1,12 @@
 import pool from "../config/db.js"
 
-export const registerUser = async (req,res)=>{
+const registerUser = async (req,res)=>{
     try{
         const {email,username,password} = req.body
-
+        
         const result = await pool.query(
             "INSERT INTO users (email, username, password) VALUES ($1,$2,$3) RETURNING * ",[email,username,password]
         )
-
         res.status(201).json({
             message:"User registered",
             user : result.rows[0]
@@ -17,3 +16,5 @@ export const registerUser = async (req,res)=>{
         res.status(500).json({error:"Server error"})
     }
 }
+
+export default registerUser
