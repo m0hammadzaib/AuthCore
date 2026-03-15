@@ -11,6 +11,7 @@ export function authMiddleware(res,req,next){
         const decoded = jwt.verify(token, provess.env.JWT_SECRET)
 
         req.user = decoded
+        
         next()
     }catch(err){
         res.status(401).json({message:"Invalid token"})
