@@ -10,7 +10,7 @@ const app = express()
 app.use(express.json())
 
 app.get("/", async (req, res) => {
-  const result = await pool.query("SELECT username,email FROM users")
+  const result = await pool.query("SELECT username,password FROM users")
   res.json(result.rows)
 })
 

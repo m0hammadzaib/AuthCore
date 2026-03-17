@@ -1,16 +1,22 @@
 import pool from "../config/db.js"
 import hashPassword from "../utils/hashPassword.js"
-import bcrypt from "bcrypt";
+import bcrypt from "bcrypt"
 
 
 const registerUser = async (req,res)=>{
     try{
         const {email,username,password} = req.body
 
-        const hashPassword = await bcrypt.hash(password,10);
+        if(!email || !password){
+            return res.status(400).json({
+                error:"Email and password are required"
+            })
+        }
+        
+        const hashedPassword = await bcrypt.hash(password,10);
 
         const result = await pool.query(
-            "INSERT INTO users (email, username, password) VALUES ($1,$2,$3) RETURNING * ",[email,username,password]
+            "INSERT INTO users (email, username, password) VALUES ($1,$2,$3) RETURNING * ",[email,username,hashedPassword]
         )
         res.status(201).json({
             message:"User registered",
