@@ -12,6 +12,20 @@ const registerUser = async (req,res)=>{
                 error:"Email and password are required"
             })
         }
+        if(password.length <6){
+           return res.status(400).json({
+            error:"Password must be atleast 6 characters"
+           })
+        }
+
+        const userExists = await pool.query(
+            "SELECT * FROM users WHERE email = $1",[email]
+        )
+        if(userExists.rows.length>0){
+            return res.status(400).json({
+                error :"User already exists"
+            })
+        }
         
         const hashedPassword = await bcrypt.hash(password,10);
 
