@@ -27,18 +27,22 @@ const registerUser = async (req,res)=>{
             })
         }
         
-        const hashedPassword = await bcrypt.hash(password,10);
+        const hashedPassword = await bcrypt.hash(password,4);
 
-        const result = await pool.query(
-            "INSERT INTO users (email, username, password) VALUES ($1,$2,$3) RETURNING * ",[email,username,hashedPassword]
-        )
-        res.status(201).json({
-            message:"User registered",
-            user : result.rows[0]
-        })
+           const result = await pool.query(
+            `INSERT INTO users (email, username, password, role)
+             VALUES ($1, $2, $3, $4)
+             RETURNING id, email, username, role, created_at`,
+            [email, username, hashedPassword, "user"]
+        );
+         res.status(201).json({
+            message: "User registered successfully",
+            user: result.rows[0]
+        });
+        
     }catch(error){
         console.log(error)
-        res.status(500).json({error:"Server error"})
+        res.status(500).json({error:"Server error"});
     }
 }
 
