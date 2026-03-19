@@ -2,6 +2,7 @@ import express from "express"
 import dotenv from "dotenv"
 import pool from './src/config/db.js'
 import authRoutes from './src/route/authRoutes.js'
+import userRoutes from './src/route/userRoutes.js'
 
 dotenv.config()
 
@@ -10,11 +11,12 @@ const app = express()
 app.use(express.json())
 
 app.get("/", async (req, res) => {
-  const result = await pool.query("SELECT username,password FROM users")
+  const result = await pool.query("SELECT username FROM users")
   res.json(result.rows)
 })
 
 app.use("/auth", authRoutes)
+app.use("/api/users", userRoutes)
 
 const PORT = process.env.PORT
 
