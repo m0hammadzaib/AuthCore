@@ -1,6 +1,6 @@
-import pool from "../config/db";
+import pool from "../config/db.js";
 
-const getCurrentUser= async (req,res)=>{
+const getCurrentUser = async (req,res)=>{
     try{
         const userID = req.user.id;
 
