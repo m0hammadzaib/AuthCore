@@ -11,7 +11,7 @@ const app = express()
 app.use(express.json())
 
 app.get("/", async (req, res) => {
-  const result = await pool.query("SELECT username FROM users")
+  const result = await pool.query("SELECT username FROM users WHERE is_deleted = false")
   res.json(result.rows)
 })
 

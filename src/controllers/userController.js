@@ -23,4 +23,32 @@ const getCurrentUser = async (req,res)=>{
     }
 }
 
+export const deleteUser = async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        const result = await pool.query(
+            `UPDATE users 
+             SET is_deleted = true 
+             WHERE id = $1 
+             RETURNING id, username, email`,
+            [userId]
+        );
+
+        res.json({
+            message: "Account deleted successfully",
+            user: result.rows[0]
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            error: "Server error"
+        });
+    }
+};
+
+
+
+
 export default getCurrentUser
